@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { useBrand } from '../context/BrandContext';
 import { complaintService } from '../services/complaintService';
+import GtuEmblem from '../components/GtuEmblem';
 import StatCard from '../components/StatCard';
 import StatusBadge from '../components/StatusBadge';
 import PriorityBadge from '../components/PriorityBadge';
@@ -26,6 +27,9 @@ import {
   Shield,
   ChevronRight,
   Eye,
+  Award,
+  PhoneCall,
+  ExternalLink,
 } from 'lucide-react';
 
 export default function StudentDashboard() {
@@ -96,58 +100,93 @@ export default function StudentDashboard() {
     <div className="min-h-screen bg-slate-50 pb-12">
       {/* Sub-header / Breadcrumb Bar */}
       <div className="bg-white border-b border-slate-200 px-4 sm:px-6 lg:px-8 py-3">
-        <div className="max-w-7xl mx-auto flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+        <div className="max-w-7xl mx-auto flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <div className="flex items-center gap-2 text-xs text-slate-500">
-            <span>Student Portal</span>
+            <span className="font-semibold text-slate-700">GTU Student Services</span>
             <ChevronRight className="w-3.5 h-3.5 text-slate-400" />
-            <span className="font-semibold text-slate-800">
-              Personal Grievance Redressal Dossier
+            <span className="font-semibold text-[#092244]">
+              Central Student Grievance Redressal Dossier
             </span>
           </div>
 
-          <button
-            onClick={() => setIsLodgeModalOpen(true)}
-            className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg bg-slate-900 hover:bg-black text-white text-xs font-semibold shadow-xs transition self-start sm:self-auto"
-          >
-            <Plus className="w-3.5 h-3.5" />
-            <span>Lodge New Grievance</span>
-          </button>
+          <div className="flex items-center gap-2">
+            <span className="text-[11px] text-slate-500 font-mono hidden md:inline">
+              Ref: UGC/GTU-SGRC/{new Date().getFullYear()}
+            </span>
+            <button
+              onClick={() => setIsLodgeModalOpen(true)}
+              className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg bg-[#092244] hover:bg-[#071933] text-white text-xs font-semibold shadow-xs transition"
+            >
+              <Plus className="w-3.5 h-3.5 text-[#c88a1e]" />
+              <span>Lodge New Grievance</span>
+            </button>
+          </div>
         </div>
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 space-y-6">
-        {/* Verified Student Identification Dossier Header */}
+        {/* Verified Student Identification Dossier Header with GTU Seal */}
         <div className="bg-white rounded-xl border border-slate-200 p-6 shadow-xs flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
           <div className="flex items-center gap-4">
-            <div className="w-12 h-12 rounded-xl bg-slate-100 border border-slate-200 flex items-center justify-center text-slate-800 font-bold text-lg">
-              {user?.name?.charAt(0) || 'S'}
+            <div className="relative">
+              <div className="w-14 h-14 rounded-xl bg-[#092244] text-white flex items-center justify-center font-bold text-xl shadow-xs">
+                {user?.name?.charAt(0) || 'S'}
+              </div>
+              <div className="absolute -bottom-1 -right-1 p-0.5 bg-white rounded-full">
+                <GtuEmblem className="w-5 h-5" />
+              </div>
             </div>
+
             <div>
-              <div className="flex items-center gap-2">
+              <div className="flex flex-wrap items-center gap-2">
                 <h1 className="text-lg font-bold text-slate-900">{user?.name}</h1>
-                <span className="text-[10px] font-semibold bg-emerald-50 text-emerald-800 border border-emerald-200 px-2 py-0.5 rounded">
-                  Verified Identity
+                <span className="text-[10px] font-semibold bg-emerald-50 text-emerald-800 border border-emerald-200 px-2 py-0.5 rounded flex items-center gap-1">
+                  <Award className="w-3 h-3 text-emerald-600" />
+                  Verified GTU Student Identity
+                </span>
+                <span className="text-[10px] font-mono font-semibold bg-slate-100 text-slate-700 border border-slate-200 px-2 py-0.5 rounded">
+                  PRN: {user?.rollNumber || 'NO-PRN'}
                 </span>
               </div>
-              <div className="flex flex-wrap items-center gap-3 text-xs text-slate-500 mt-1">
-                <span>
-                  University PRN: <strong className="font-mono text-slate-800">{user?.rollNumber}</strong>
-                </span>
+
+              <div className="flex flex-wrap items-center gap-3 text-xs text-slate-500 mt-1.5">
+                <span>Discipline: <strong className="text-slate-800 font-semibold">{user?.department}</strong></span>
                 <span>•</span>
-                <span>Department: <strong className="text-slate-800">{user?.department}</strong></span>
-                {user?.hostelRoom && (
-                  <>
-                    <span>•</span>
-                    <span>Residence: <strong className="text-slate-800">{user?.hostelRoom}</strong></span>
-                  </>
-                )}
+                <span>
+                  Affiliated Unit / Campus:{' '}
+                  <strong className="text-slate-800 font-semibold">
+                    {user?.hostelRoom || 'Chandkheda Campus / Affiliated Engineering College'}
+                  </strong>
+                </span>
               </div>
             </div>
           </div>
 
           <div className="text-right text-xs text-slate-500 pt-2 md:pt-0 border-t md:border-t-0 border-slate-100 w-full md:w-auto">
-            <span className="block text-[11px] text-slate-400">Institutional Affiliation</span>
-            <span className="font-semibold text-slate-700">{institution.shortName} • {institution.academicSession}</span>
+            <span className="block text-[11px] text-[#c88a1e] font-semibold">
+              {institution.nativeName || 'ગુજરાત ટેકનોલોજીકલ યુનિવર્સિટી'}
+            </span>
+            <span className="font-bold text-slate-800">{institution.shortName} • {institution.accreditation}</span>
+            <span className="block text-[10px] text-slate-400 font-mono mt-0.5">AY {institution.academicSession}</span>
+          </div>
+        </div>
+
+        {/* Institutional Statutory Guarantee Banner */}
+        <div className="bg-gradient-to-r from-[#092244]/5 via-[#092244]/10 to-amber-500/5 rounded-xl border border-slate-200/80 p-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 text-xs text-slate-700">
+          <div className="flex items-start gap-3">
+            <Shield className="w-5 h-5 text-[#092244] shrink-0 mt-0.5" />
+            <div>
+              <p className="font-bold text-slate-900">
+                Statutory Redressal Governance Under UGC Regulations, 2023
+              </p>
+              <p className="text-[11px] text-slate-600 mt-0.5">
+                Every grievance filed is assigned a permanent university docket number, scrutinized by the GTU Central SGRC, and subject to an Ombudsman resolution SLA benchmark of 7 working days.
+              </p>
+            </div>
+          </div>
+          <div className="flex items-center gap-2 shrink-0 text-[11px] text-slate-600 font-medium">
+            <PhoneCall className="w-3.5 h-3.5 text-[#c88a1e]" />
+            <span>GTU Redressal Cell: +91 (079) 23267521</span>
           </div>
         </div>
 

@@ -5,8 +5,8 @@ import { useNotifications } from '../context/NotificationContext';
 import { useBrand } from '../context/BrandContext';
 import NotificationDropdown from './NotificationDropdown';
 import InstitutionalSettingsModal from './InstitutionalSettingsModal';
+import GtuEmblem from './GtuEmblem';
 import {
-  Building2,
   Bell,
   LogOut,
   User,
@@ -22,6 +22,7 @@ import {
   PhoneCall,
   Lock,
   ExternalLink,
+  Building,
 } from 'lucide-react';
 
 export default function Navbar({ onOpenLodgeModal }) {
@@ -45,21 +46,21 @@ export default function Navbar({ onOpenLodgeModal }) {
     switch (role) {
       case 'admin':
         return (
-          <span className="inline-flex items-center gap-1.5 px-2.5 py-1 text-[11px] font-semibold rounded-md bg-slate-800 text-white border border-slate-700">
-            <Shield className="w-3 h-3 text-slate-300" />
-            Dean / Administrator
+          <span className="inline-flex items-center gap-1.5 px-2.5 py-1 text-[11px] font-semibold rounded-md bg-[#092244] text-white border border-[#c88a1e]/40 shadow-xs">
+            <Shield className="w-3 h-3 text-[#c88a1e]" />
+            GTU SGRC Secretariat / Dean
           </span>
         );
       case 'staff':
         return (
-          <span className="inline-flex items-center gap-1.5 px-2.5 py-1 text-[11px] font-semibold rounded-md bg-blue-900 text-blue-100 border border-blue-800">
+          <span className="inline-flex items-center gap-1.5 px-2.5 py-1 text-[11px] font-semibold rounded-md bg-blue-900 text-blue-100 border border-blue-700 shadow-xs">
             <Briefcase className="w-3 h-3 text-blue-300" />
-            Cell Officer / Staff
+            GTU Zonal Officer / Engineer
           </span>
         );
       default:
         return (
-          <span className="inline-flex items-center gap-1.5 px-2.5 py-1 text-[11px] font-semibold rounded-md bg-slate-100 text-slate-800 border border-slate-300">
+          <span className="inline-flex items-center gap-1.5 px-2.5 py-1 text-[11px] font-semibold rounded-md bg-slate-100 text-slate-800 border border-slate-300 shadow-xs">
             <GraduationCap className="w-3 h-3 text-slate-600" />
             Enrolled Student
           </span>
@@ -75,15 +76,15 @@ export default function Navbar({ onOpenLodgeModal }) {
 
   return (
     <>
-      {/* Top Statutory Administrative Bar */}
-      <div className="bg-[#0b1f3a] text-slate-300 text-[11px] py-1 px-4 border-b border-slate-800">
+      {/* Top Government of Gujarat & Regulatory Strip */}
+      <div className="bg-[#06182e] text-slate-300 text-[11px] py-1.5 px-4 border-b border-slate-800">
         <div className="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-2">
           <div className="flex items-center gap-3">
-            <span className="font-medium text-white flex items-center gap-1.5">
+            <span className="font-semibold text-white flex items-center gap-1.5">
               <span className="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
-              {institution.shortName} Central Grievance Redressal Portal
+              Government of Gujarat • Education Department
             </span>
-            <span className="hidden md:inline-block text-slate-400 border-l border-slate-700 pl-3">
+            <span className="hidden lg:inline-block text-slate-400 border-l border-slate-700 pl-3">
               {institution.accreditation}
             </span>
           </div>
@@ -93,17 +94,26 @@ export default function Navbar({ onOpenLodgeModal }) {
               Session: {institution.academicSession}
             </span>
             <a
-              href={`tel:${institution.helpline}`}
-              className="hover:text-white flex items-center gap-1 transition"
+              href="https://www.gtu.ac.in/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-[#f59e0b] hover:text-amber-200 flex items-center gap-1 font-semibold transition"
+              title="Visit official GTU university portal"
+            >
+              <span>www.gtu.ac.in</span>
+              <ExternalLink className="w-3 h-3" />
+            </a>
+            <a
+              href={`tel:${institution.helpline.split('/')[0].trim()}`}
+              className="hidden md:flex hover:text-white items-center gap-1 transition"
             >
               <PhoneCall className="w-3 h-3 text-slate-400" />
               <span>Helpline: {institution.helpline}</span>
             </a>
-            {/* Quick SaaS Branding Customizer trigger */}
             <button
               onClick={() => setIsSettingsOpen(true)}
               className="text-slate-300 hover:text-white flex items-center gap-1 px-2 py-0.5 rounded bg-slate-800/80 border border-slate-700 hover:bg-slate-700 transition"
-              title="Configure Institution Branding"
+              title="Configure Institutional Branding"
             >
               <Sliders className="w-3 h-3" />
               <span>Branding</span>
@@ -112,28 +122,28 @@ export default function Navbar({ onOpenLodgeModal }) {
         </div>
       </div>
 
-      {/* Main Official Header */}
+      {/* Main Official GTU Masthead */}
       <header className="sticky top-0 z-40 bg-white border-b border-slate-200 shadow-xs">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-18">
-            {/* University Seal & Name */}
+          <div className="flex items-center justify-between h-20">
+            {/* University Crest & Bilingual Title */}
             <div className="flex items-center gap-3">
               <Link
                 to={isAuthenticated ? getDashboardPath() : '/'}
-                className="flex items-center gap-3 group"
+                className="flex items-center gap-3.5 group"
               >
-                {/* Official University Seal Crest */}
-                <div className="w-11 h-11 rounded-lg bg-[#0b1f3a] border border-slate-800 flex items-center justify-center text-white shadow-xs group-hover:bg-[#122b4d] transition shrink-0">
-                  <div className="text-center">
-                    <Shield className="w-5 h-5 mx-auto text-amber-400" />
-                  </div>
-                </div>
+                <GtuEmblem className="w-13 h-13" />
 
                 <div className="leading-tight">
-                  <span className="block font-bold text-base sm:text-lg text-slate-900 tracking-tight group-hover:text-slate-800">
-                    {institution.name}
+                  <div className="flex items-baseline gap-2">
+                    <span className="block font-extrabold text-base sm:text-lg lg:text-xl text-[#092244] tracking-tight group-hover:text-[#0e3259] transition">
+                      {institution.name}
+                    </span>
+                  </div>
+                  <span className="block text-xs font-semibold text-[#c88a1e] tracking-wide">
+                    {institution.nativeName || 'ગુજરાત ટેકનોલોજીકલ યુનિવર્સિટી'}
                   </span>
-                  <span className="block text-[11px] font-medium text-slate-500">
+                  <span className="hidden sm:block text-[11px] text-slate-500 font-medium">
                     {institution.subTitle}
                   </span>
                 </div>
@@ -149,11 +159,11 @@ export default function Navbar({ onOpenLodgeModal }) {
                       to={getDashboardPath()}
                       className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-semibold transition ${
                         location.pathname === getDashboardPath()
-                          ? 'bg-slate-100 text-slate-900 border border-slate-200'
-                          : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
+                          ? 'bg-[#092244] text-white'
+                          : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
                       }`}
                     >
-                      <ClipboardList className="w-3.5 h-3.5 text-slate-500" />
+                      <ClipboardList className="w-3.5 h-3.5" />
                       Dashboard
                     </Link>
 
@@ -162,21 +172,21 @@ export default function Navbar({ onOpenLodgeModal }) {
                         to="/admin/analytics"
                         className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-semibold transition ${
                           location.pathname === '/admin/analytics'
-                            ? 'bg-slate-100 text-slate-900 border border-slate-200'
-                            : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
-                        }`}
-                      >
-                        <BarChart3 className="w-3.5 h-3.5 text-slate-500" />
-                        Executive Analytics
-                      </Link>
-                    )}
+                            ? 'bg-[#092244] text-white'
+                            : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
+                      }`}
+                    >
+                      <BarChart3 className="w-3.5 h-3.5" />
+                      Executive Analytics
+                    </Link>
+                  )}
 
                     {role === 'student' && onOpenLodgeModal && (
                       <button
                         onClick={onOpenLodgeModal}
-                        className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-md text-xs font-semibold bg-[#0b1f3a] hover:bg-[#152e4d] text-white shadow-xs transition active:scale-95 ml-1"
+                        className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-md text-xs font-semibold bg-[#092244] hover:bg-[#0e3259] text-white border border-[#c88a1e]/40 shadow-xs transition active:scale-95 ml-1"
                       >
-                        <Plus className="w-3.5 h-3.5" />
+                        <Plus className="w-3.5 h-3.5 text-[#c88a1e]" />
                         Lodge Grievance
                       </button>
                     )}
@@ -210,35 +220,35 @@ export default function Navbar({ onOpenLodgeModal }) {
                     <div className="text-right leading-tight">
                       <p className="text-xs font-bold text-slate-900">{user?.name}</p>
                       <p className="text-[10px] text-slate-500 font-mono">
-                        {role === 'student' ? user?.rollNumber : user?.department?.split(' ')[0]}
+                        {role === 'student' ? `PRN: ${user?.rollNumber}` : user?.department?.split(' ')[0]}
                       </p>
                     </div>
 
-                    <div className="w-8 h-8 rounded-md bg-slate-100 text-slate-800 font-bold text-xs flex items-center justify-center border border-slate-300">
+                    <div className="w-8 h-8 rounded-md bg-[#092244] text-[#c88a1e] font-bold text-xs flex items-center justify-center border border-slate-700 shadow-xs">
                       {user?.name ? user.name.charAt(0).toUpperCase() : 'U'}
                     </div>
 
                     <button
                       onClick={handleLogout}
                       className="p-1.5 rounded-md text-slate-400 hover:text-rose-600 hover:bg-rose-50 transition border border-transparent hover:border-rose-200"
-                      title="Sign Out"
+                      title="Sign Out of GTU Portal"
                     >
                       <LogOut className="w-4 h-4" />
                     </button>
                   </div>
                 </>
               ) : (
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-2.5">
                   <Link
                     to="/login"
-                    className="flex items-center gap-1.5 px-3.5 py-2 text-xs font-semibold text-slate-700 hover:text-slate-900 hover:bg-slate-100 rounded-lg border border-slate-200 transition"
+                    className="flex items-center gap-1.5 px-3.5 py-2 text-xs font-semibold text-slate-700 hover:text-slate-900 hover:bg-slate-100 rounded-lg border border-slate-300 transition"
                   >
                     <Lock className="w-3.5 h-3.5 text-slate-500" />
-                    Institutional Sign In
+                    GTU Single Sign-On (SSO)
                   </Link>
                   <Link
                     to="/register"
-                    className="px-4 py-2 text-xs font-semibold text-white bg-[#0b1f3a] hover:bg-[#152e4d] rounded-lg shadow-xs transition"
+                    className="px-4 py-2 text-xs font-semibold text-white bg-[#092244] hover:bg-[#0e3259] border border-[#c88a1e]/40 rounded-lg shadow-xs transition"
                   >
                     Student Enrollment
                   </Link>
@@ -320,9 +330,9 @@ export default function Navbar({ onOpenLodgeModal }) {
                         setMobileMenuOpen(false);
                         onOpenLodgeModal();
                       }}
-                      className="w-full flex items-center gap-2 px-3 py-2 rounded-md text-xs font-semibold text-white bg-[#0b1f3a]"
+                      className="w-full flex items-center gap-2 px-3 py-2 rounded-md text-xs font-semibold text-white bg-[#092244]"
                     >
-                      <Plus className="w-4 h-4" />
+                      <Plus className="w-4 h-4 text-[#c88a1e]" />
                       Lodge Grievance
                     </button>
                   )}
@@ -357,12 +367,12 @@ export default function Navbar({ onOpenLodgeModal }) {
                   onClick={() => setMobileMenuOpen(false)}
                   className="block text-center py-2 rounded-lg text-slate-700 bg-slate-100 font-semibold text-xs border border-slate-200"
                 >
-                  Institutional Sign In
+                  GTU Single Sign-On (SSO)
                 </Link>
                 <Link
                   to="/register"
                   onClick={() => setMobileMenuOpen(false)}
-                  className="block text-center py-2 rounded-lg text-white bg-[#0b1f3a] font-semibold text-xs"
+                  className="block text-center py-2 rounded-lg text-white bg-[#092244] font-semibold text-xs"
                 >
                   Student Enrollment
                 </Link>

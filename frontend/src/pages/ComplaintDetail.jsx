@@ -3,6 +3,7 @@ import { useParams, useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { useBrand } from '../context/BrandContext';
 import { complaintService } from '../services/complaintService';
+import GtuEmblem from '../components/GtuEmblem';
 import StatusBadge from '../components/StatusBadge';
 import PriorityBadge from '../components/PriorityBadge';
 import TimelineView from '../components/TimelineView';
@@ -165,42 +166,74 @@ export default function ComplaintDetail() {
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 space-y-6">
-        {/* Dossier Header Banner */}
-        <div className="bg-white rounded-xl border border-slate-200 shadow-xs p-6 space-y-4">
-          <div className="flex flex-wrap items-center justify-between gap-3 pb-3 border-b border-slate-100">
-            <div className="flex flex-wrap items-center gap-2">
-              <span className="font-mono text-xs font-bold px-2.5 py-1 rounded bg-slate-100 text-slate-800 border border-slate-200">
-                {complaint.complaintId}
-              </span>
-              <span className="text-xs px-2.5 py-1 rounded bg-slate-100 font-medium text-slate-700 border border-slate-200">
-                {complaint.category}
-              </span>
-              <PriorityBadge priority={complaint.priority} />
-              <StatusBadge status={complaint.status} />
+        {/* Official University Letterhead Banner */}
+        <div className="bg-white rounded-xl border border-slate-200 shadow-xs overflow-hidden">
+          <div className="bg-[#092244] text-white p-5 border-b border-[#06182e] flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div className="flex items-center gap-4">
+              <GtuEmblem className="w-14 h-14 shrink-0 drop-shadow-md" />
+              <div>
+                <p className="text-xs text-[#c88a1e] font-semibold tracking-wide">
+                  {institution.nativeName || 'ગુજરાત ટેકનોલોજીકલ યુનિવર્સિટી'}
+                </p>
+                <h2 className="text-base sm:text-lg font-extrabold text-white tracking-tight">
+                  GUJARAT TECHNOLOGICAL UNIVERSITY
+                </h2>
+                <p className="text-[11px] text-slate-300 mt-0.5">
+                  Central Student Grievance Redressal Committee (SGRC) • Chandkheda Headquarters, Ahmedabad
+                </p>
+              </div>
             </div>
 
-            <span className="text-xs text-slate-500 font-mono">
-              AY 2026–2027 • Official Record
-            </span>
+            <div className="text-left md:text-right text-xs text-slate-300 border-t md:border-t-0 border-slate-700/60 pt-2 md:pt-0">
+              <span className="block font-mono text-[11px] text-[#c88a1e] font-bold">
+                Docket: {complaint.complaintId}
+              </span>
+              <span className="text-[11px] text-slate-400">
+                UGC Reg. 2023 • Case Ref: GTU/SGRC/2026/{complaint.complaintId.replace('CMP-', '')}
+              </span>
+              <span className="block text-[10px] text-slate-400">
+                Academic Session {institution.academicSession}
+              </span>
+            </div>
           </div>
 
-          <div>
-            <h1 className="text-xl sm:text-2xl font-bold text-slate-900 leading-snug">
-              {complaint.title}
-            </h1>
-            <div className="flex flex-wrap items-center gap-4 text-xs text-slate-500 mt-2">
-              <span className="flex items-center gap-1.5">
-                <Calendar className="w-3.5 h-3.5 text-slate-400" />
-                Lodged on {formatDateTime(complaint.createdAt)}
-              </span>
-              {complaint.location?.building && (
-                <span className="flex items-center gap-1.5">
-                  <Building className="w-3.5 h-3.5 text-slate-400" />
-                  Location: {complaint.location.building}
-                  {complaint.location.roomOrArea && `, ${complaint.location.roomOrArea}`}
-                  {complaint.location.landmark && ` (${complaint.location.landmark})`}
+          {/* Dossier Subject & Classification Bar */}
+          <div className="p-6 space-y-3">
+            <div className="flex flex-wrap items-center justify-between gap-3 pb-3 border-b border-slate-100">
+              <div className="flex flex-wrap items-center gap-2">
+                <span className="font-mono text-xs font-bold px-2.5 py-1 rounded bg-slate-100 text-slate-800 border border-slate-200">
+                  {complaint.complaintId}
                 </span>
-              )}
+                <span className="text-xs px-2.5 py-1 rounded bg-slate-100 font-medium text-slate-700 border border-slate-200">
+                  {complaint.category}
+                </span>
+                <PriorityBadge priority={complaint.priority} />
+                <StatusBadge status={complaint.status} />
+              </div>
+
+              <span className="text-xs text-slate-500 font-mono">
+                Statutory Redressal Dossier
+              </span>
+            </div>
+
+            <div>
+              <h1 className="text-xl sm:text-2xl font-bold text-slate-900 leading-snug">
+                {complaint.title}
+              </h1>
+              <div className="flex flex-wrap items-center gap-4 text-xs text-slate-500 mt-2">
+                <span className="flex items-center gap-1.5">
+                  <Calendar className="w-3.5 h-3.5 text-slate-400" />
+                  Lodged on {formatDateTime(complaint.createdAt)}
+                </span>
+                {complaint.location?.building && (
+                  <span className="flex items-center gap-1.5">
+                    <Building className="w-3.5 h-3.5 text-slate-400" />
+                    Campus Location: {complaint.location.building}
+                    {complaint.location.roomOrArea && `, ${complaint.location.roomOrArea}`}
+                    {complaint.location.landmark && ` (${complaint.location.landmark})`}
+                  </span>
+                )}
+              </div>
             </div>
           </div>
         </div>
@@ -406,6 +439,39 @@ export default function ComplaintDetail() {
               </h3>
               <TimelineView timeline={complaint.timeline || []} />
             </div>
+          </div>
+        </div>
+
+        {/* Statutory Committee Sign-off Block (Visible on dossier & print) */}
+        <div className="bg-white rounded-xl border border-slate-200 shadow-xs p-6 print:border-slate-800">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-2">
+            <div className="border-t-2 border-slate-300 pt-3 text-center">
+              <p className="font-bold text-xs text-slate-800">{complaint.student?.name}</p>
+              <p className="text-[10px] text-slate-500 font-mono">PRN: {complaint.student?.rollNumber}</p>
+              <p className="text-[10px] text-slate-400 mt-1 uppercase font-semibold">Signature of Complainant</p>
+            </div>
+            <div className="border-t-2 border-slate-300 pt-3 text-center">
+              <p className="font-bold text-xs text-slate-800">
+                {complaint.assignedTo?.name || 'Awaiting Allocation'}
+              </p>
+              <p className="text-[10px] text-slate-500">
+                {complaint.assignedTo?.department || 'GTU Zonal Redressal Cell'}
+              </p>
+              <p className="text-[10px] text-slate-400 mt-1 uppercase font-semibold">
+                Designated Cell Redressal Officer
+              </p>
+            </div>
+            <div className="border-t-2 border-slate-300 pt-3 text-center">
+              <p className="font-bold text-xs text-slate-800">Member Secretary / Ombudsman</p>
+              <p className="text-[10px] text-slate-500">GTU Central SGRC Secretariat</p>
+              <p className="text-[10px] text-slate-400 mt-1 uppercase font-semibold">
+                Institutional Redressal Seal & Date
+              </p>
+            </div>
+          </div>
+          <div className="mt-4 pt-3 border-t border-slate-100 flex flex-wrap items-center justify-between text-[10px] text-slate-400">
+            <span>Gujarat Technological University Act No. 20 of 2007 • UGC Grievance Redressal Norms</span>
+            <span>Document Ref: GTU/SGRC/DOSSIER/{complaint.complaintId}</span>
           </div>
         </div>
       </div>

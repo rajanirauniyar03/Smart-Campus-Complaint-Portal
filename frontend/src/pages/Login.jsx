@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { useBrand } from '../context/BrandContext';
+import GtuEmblem from '../components/GtuEmblem';
 import {
   Shield,
   Lock,
@@ -16,6 +17,7 @@ import {
   KeyRound,
   ChevronDown,
   ChevronUp,
+  ExternalLink,
 } from 'lucide-react';
 
 export default function Login() {
@@ -36,7 +38,7 @@ export default function Login() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!email || !password) {
-      setError('Please provide your institutional email and password');
+      setError('Please provide your official university email and password');
       return;
     }
 
@@ -57,7 +59,7 @@ export default function Login() {
     } catch (err) {
       setError(
         err.response?.data?.message ||
-          'Authentication failed. Please verify your institutional credentials.'
+          'Authentication failed. Please verify your institutional GTU credentials.'
       );
     } finally {
       setLoading(false);
@@ -71,67 +73,75 @@ export default function Login() {
   };
 
   return (
-    <div className="min-h-[90vh] flex flex-col justify-center py-10 px-4 sm:px-6 lg:px-8 bg-slate-50">
+    <div className="min-h-[90vh] flex flex-col justify-center py-10 px-4 sm:px-6 lg:px-8 bg-slate-50 font-sans">
       <div className="max-w-4xl w-full mx-auto bg-white rounded-2xl border border-slate-200 shadow-xl overflow-hidden grid grid-cols-1 md:grid-cols-12">
-        {/* Left Column: Official Institution Seal & Policy Panel */}
-        <div className="md:col-span-5 bg-[#0b1f3a] text-white p-8 flex flex-col justify-between border-b md:border-b-0 md:border-r border-slate-800">
+        {/* Left Column: GTU Emblem & Statutory Policy Panel */}
+        <div className="md:col-span-5 bg-[#092244] text-white p-8 flex flex-col justify-between border-b md:border-b-0 md:border-r border-slate-800">
           <div className="space-y-6">
             <div className="flex items-center gap-3">
-              <div className="w-12 h-12 rounded-xl bg-slate-800 border border-slate-700 flex items-center justify-center text-white">
-                <Shield className="w-6 h-6 text-amber-400" />
-              </div>
+              <GtuEmblem className="w-12 h-12" />
               <div>
-                <h3 className="font-bold text-sm tracking-tight text-white leading-tight">
-                  {institution.shortName} ERP
+                <h3 className="font-extrabold text-sm tracking-tight text-white leading-tight">
+                  {institution.shortName} Samadhan
                 </h3>
-                <span className="text-[11px] text-slate-300">Statutory Redressal</span>
+                <span className="text-[11px] text-[#c88a1e] font-semibold">
+                  {institution.nativeName || 'ગુજરાત ટેકનોલોજીકલ યુનિવર્સિટી'}
+                </span>
               </div>
             </div>
 
             <div className="space-y-2">
               <h2 className="text-xl font-extrabold text-white leading-tight">
-                Institutional Single Sign-On (SSO)
+                GTU Single Sign-On (SSO) Portal
               </h2>
               <p className="text-xs text-slate-300 leading-relaxed">
-                Centralized gateway for university students, administrative deans, and maintenance
-                staff officers.
+                Centralized authentication terminal for GTU students, administrative deans,
+                and zonal cell engineers across all 5 zones in Gujarat.
               </p>
             </div>
 
             <div className="space-y-3 pt-4 border-t border-slate-800 text-xs text-slate-300">
               <div className="flex items-start gap-2">
                 <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
-                <span>Zero anonymous reports. Complete verifiable complainant identity.</span>
+                <span>12-Digit GTU enrollment number verification. No anonymous reports.</span>
               </div>
               <div className="flex items-start gap-2">
                 <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
-                <span>Statutory compliance with UGC Grievance Redressal Regulations.</span>
+                <span>UGC (Grievance Redressal of Students) Regulations, 2023 Compliant.</span>
               </div>
               <div className="flex items-start gap-2">
                 <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
-                <span>Real-time digital audit trail with timestamped logs.</span>
+                <span>Encrypted audit trail with verified digital timestamps.</span>
               </div>
             </div>
           </div>
 
           <div className="pt-6 border-t border-slate-800/80 text-[11px] text-slate-400 space-y-1">
-            <p className="font-semibold text-slate-300">Institutional Support Desk:</p>
+            <p className="font-semibold text-slate-300">GTU Chandkheda Helpdesk:</p>
             <p>{institution.helpline}</p>
-            <p className="truncate">{institution.supportEmail}</p>
+            <p className="truncate text-amber-400">{institution.supportEmail}</p>
+            <a
+              href="https://www.gtu.ac.in/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1 text-slate-400 hover:text-white pt-1"
+            >
+              Official GTU Website <ExternalLink className="w-3 h-3" />
+            </a>
           </div>
         </div>
 
         {/* Right Column: Secure Authentication Form */}
         <div className="md:col-span-7 p-8 sm:p-10 space-y-6 flex flex-col justify-center">
           <div>
-            <span className="text-[10px] font-bold text-slate-500 uppercase tracking-wider block">
-              Secure Academic Gateway
+            <span className="text-[10px] font-bold text-slate-500 uppercase tracking-wider block font-mono">
+              Government of Gujarat • State Technological University
             </span>
             <h2 className="text-xl sm:text-2xl font-bold text-slate-900 mt-0.5">
               Sign In to Your Account
             </h2>
             <p className="text-xs text-slate-500 mt-1">
-              Enter your official campus email and master password to proceed.
+              Authenticate with your registered institutional email and master password.
             </p>
           </div>
 
@@ -152,7 +162,7 @@ export default function Login() {
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
               <label className="block text-xs font-semibold text-slate-700 mb-1">
-                Institutional Email Address <span className="text-rose-500">*</span>
+                University Email Address <span className="text-rose-500">*</span>
               </label>
               <div className="relative">
                 <Mail className="w-4 h-4 text-slate-400 absolute left-3 top-3" />
@@ -161,8 +171,8 @@ export default function Login() {
                   required
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  placeholder="rollno@campus.edu or officer@campus.edu"
-                  className="w-full text-xs pl-9 pr-3 py-2.5 rounded-lg border border-slate-300 focus:outline-none focus:ring-1 focus:ring-slate-800"
+                  placeholder="enrollment@campus.edu or officer@campus.edu"
+                  className="w-full text-xs pl-9 pr-3 py-2.5 rounded-lg border border-slate-300 focus:outline-none focus:ring-1 focus:ring-[#092244]"
                 />
               </div>
             </div>
@@ -170,7 +180,7 @@ export default function Login() {
             <div>
               <div className="flex items-center justify-between mb-1">
                 <label className="block text-xs font-semibold text-slate-700">
-                  Password <span className="text-rose-500">*</span>
+                  Master Password <span className="text-rose-500">*</span>
                 </label>
                 <span className="text-[11px] text-slate-500 hover:text-slate-800 cursor-pointer">
                   Forgot Password?
@@ -184,7 +194,7 @@ export default function Login() {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="••••••••"
-                  className="w-full text-xs pl-9 pr-3 py-2.5 rounded-lg border border-slate-300 focus:outline-none focus:ring-1 focus:ring-slate-800"
+                  className="w-full text-xs pl-9 pr-3 py-2.5 rounded-lg border border-slate-300 focus:outline-none focus:ring-1 focus:ring-[#092244]"
                 />
               </div>
             </div>
@@ -192,14 +202,14 @@ export default function Login() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full py-2.5 px-4 rounded-lg bg-slate-900 hover:bg-black text-white font-semibold text-xs shadow-xs transition flex items-center justify-center gap-2 disabled:opacity-50"
+              className="w-full py-2.5 px-4 rounded-lg bg-[#092244] hover:bg-[#0e3259] text-white font-semibold text-xs shadow-xs transition flex items-center justify-center gap-2 disabled:opacity-50"
             >
-              {loading ? 'Verifying Credentials...' : 'Sign In to Portal'}
+              {loading ? 'Verifying Credentials...' : 'Sign In to GTU Portal'}
               <ArrowRight className="w-4 h-4" />
             </button>
           </form>
 
-          {/* Discreet Evaluation Accordion (Keeps UI Enterprise, but enables quick 1-click test) */}
+          {/* Discreet Evaluation Accordion */}
           <div className="border border-slate-200 rounded-lg overflow-hidden bg-slate-50">
             <button
               type="button"
@@ -208,7 +218,7 @@ export default function Login() {
             >
               <span className="flex items-center gap-1.5">
                 <KeyRound className="w-3.5 h-3.5 text-slate-500" />
-                Institution Evaluation Credentials (Quick Autofill)
+                GTU Evaluation Personas (Quick Autofill)
               </span>
               {showSandboxHelper ? (
                 <ChevronUp className="w-3.5 h-3.5" />
@@ -220,7 +230,7 @@ export default function Login() {
             {showSandboxHelper && (
               <div className="p-3 bg-white border-t border-slate-200 space-y-2 text-xs">
                 <p className="text-[11px] text-slate-500">
-                  Click any role below to populate official evaluation login credentials:
+                  Select an authenticated GTU test account below:
                 </p>
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
                   <button
@@ -228,8 +238,8 @@ export default function Login() {
                     onClick={() => autofillPersona('admin@campus.edu', 'Admin@123')}
                     className="p-2 rounded border border-slate-200 hover:bg-slate-50 text-left transition"
                   >
-                    <span className="block font-bold text-slate-800 text-[11px]">Administrator</span>
-                    <span className="block text-[10px] text-slate-500">Dr. Ramesh (Dean)</span>
+                    <span className="block font-bold text-slate-800 text-[11px]">GTU SGRC Dean</span>
+                    <span className="block text-[10px] text-slate-500">Dr. Ramesh Narayan</span>
                   </button>
 
                   <button
@@ -237,7 +247,7 @@ export default function Login() {
                     onClick={() => autofillPersona('staff.it@campus.edu', 'Staff@123')}
                     className="p-2 rounded border border-slate-200 hover:bg-slate-50 text-left transition"
                   >
-                    <span className="block font-bold text-slate-800 text-[11px]">Staff Officer</span>
+                    <span className="block font-bold text-slate-800 text-[11px]">Zonal Engineer</span>
                     <span className="block text-[10px] text-slate-500">Rajesh Kumar (IT)</span>
                   </button>
 
@@ -246,8 +256,8 @@ export default function Login() {
                     onClick={() => autofillPersona('student.aarav@campus.edu', 'Student@123')}
                     className="p-2 rounded border border-slate-200 hover:bg-slate-50 text-left transition"
                   >
-                    <span className="block font-bold text-slate-800 text-[11px]">Student</span>
-                    <span className="block text-[10px] text-slate-500">Aarav (Roll: 2023CS0142)</span>
+                    <span className="block font-bold text-slate-800 text-[11px]">GTU Student</span>
+                    <span className="block text-[10px] text-slate-500">Aarav (2023CS0142)</span>
                   </button>
                 </div>
               </div>
@@ -255,7 +265,7 @@ export default function Login() {
           </div>
 
           <div className="pt-4 border-t border-slate-200 flex items-center justify-between text-xs text-slate-500">
-            <span>New admitted student?</span>
+            <span>Enrolled at GTU or affiliated college?</span>
             <Link
               to="/register"
               className="font-semibold text-slate-900 hover:text-black underline underline-offset-2"

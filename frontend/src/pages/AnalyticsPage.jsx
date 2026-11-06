@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useBrand } from '../context/BrandContext';
 import { analyticsService } from '../services/analyticsService';
+import GtuEmblem from '../components/GtuEmblem';
 import StatCard from '../components/StatCard';
 import StatusBadge from '../components/StatusBadge';
 import PriorityBadge from '../components/PriorityBadge';
@@ -21,6 +22,8 @@ import {
   Printer,
   ChevronRight,
   Shield,
+  MapPin,
+  Award,
 } from 'lucide-react';
 
 export default function AnalyticsPage() {
@@ -102,28 +105,35 @@ export default function AnalyticsPage() {
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 space-y-6">
-        {/* Title Header */}
-        <div className="bg-white rounded-xl border border-slate-200 p-6 shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-          <div>
-            <div className="flex items-center gap-2">
-              <span className="text-[10px] font-bold uppercase bg-slate-100 text-slate-800 border border-slate-200 px-2 py-0.5 rounded">
-                Annual Redressal Audit
-              </span>
-              <span className="text-xs text-slate-500 font-mono">
-                Session: {institution.academicSession}
-              </span>
+        {/* Title Header with GTU Seal */}
+        <div className="bg-white rounded-xl border border-slate-200 p-6 shadow-xs flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div className="flex items-center gap-4">
+            <GtuEmblem className="w-14 h-14 shrink-0 drop-shadow-xs" />
+            <div>
+              <div className="flex flex-wrap items-center gap-2">
+                <span className="text-[10px] font-bold uppercase bg-slate-100 text-slate-800 border border-slate-200 px-2 py-0.5 rounded">
+                  Annual Redressal Audit
+                </span>
+                <span className="text-[10px] font-semibold bg-emerald-50 text-emerald-800 border border-emerald-200 px-2 py-0.5 rounded flex items-center gap-1">
+                  <Award className="w-3 h-3 text-emerald-600" /> NAAC A+ Certified
+                </span>
+                <span className="text-xs text-slate-500 font-mono">
+                  Session: {institution.academicSession}
+                </span>
+              </div>
+              <h1 className="text-xl sm:text-2xl font-bold text-slate-900 mt-1">
+                Grievance Governance & SLA Compliance Intelligence
+              </h1>
+              <p className="text-xs text-[#c88a1e] font-semibold mt-0.5">
+                {institution.nativeName || 'ગુજરાત ટેકનોલોજીકલ યુનિવર્સિટી'} • {institution.name} (Central SGRC)
+              </p>
             </div>
-            <h1 className="text-xl sm:text-2xl font-bold text-slate-900 mt-1">
-              Grievance Governance & SLA Compliance Intelligence
-            </h1>
-            <p className="text-xs text-slate-500 mt-0.5">
-              {institution.name} • Certified under UGC Redressal Norms
-            </p>
           </div>
 
-          <div className="text-right text-xs text-slate-500 pt-2 sm:pt-0 border-t sm:border-t-0 border-slate-100">
+          <div className="text-right text-xs text-slate-500 pt-2 md:pt-0 border-t md:border-t-0 border-slate-100">
             <p className="font-semibold text-slate-700">Ombudsman SLA Benchmark:</p>
             <p className="font-mono text-emerald-700 font-bold">7 Working Days Turnaround</p>
+            <p className="text-[10px] text-slate-400 mt-0.5">UGC Redressal Norms 2023</p>
           </div>
         </div>
 
@@ -216,6 +226,87 @@ export default function AnalyticsPage() {
                 </div>
               ))}
             </div>
+          </div>
+        </div>
+
+        {/* GTU 5-Zone Administrative Jurisdiction & Redressal Performance */}
+        <div className="bg-white rounded-xl border border-slate-200 shadow-xs p-6 space-y-4">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-3 border-b border-slate-100 gap-2">
+            <div>
+              <h3 className="font-bold text-slate-900 text-sm flex items-center gap-2">
+                <MapPin className="w-4 h-4 text-[#c88a1e]" />
+                Gujarat Technological University — 5 Administrative Zones Performance
+              </h3>
+              <p className="text-xs text-slate-500 mt-0.5">
+                Statutory jurisdiction across 400+ affiliated colleges and polytechnic institutes
+              </p>
+            </div>
+            <span className="text-[11px] font-mono font-semibold px-2.5 py-1 rounded bg-[#092244] text-white self-start sm:self-auto">
+              5 Zonal Liaison Cells Active
+            </span>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-5 gap-3 pt-1">
+            {[
+              {
+                zone: 'Zone 1 - Ahmedabad',
+                hq: 'Chandkheda / LDCE / VGEC',
+                colleges: '120+ Affiliated Units',
+                share: '42%',
+                sla: '94% SLA',
+                status: 'Optimal',
+              },
+              {
+                zone: 'Zone 2 - Gandhinagar',
+                hq: 'GEC Gandhinagar, Sec 28',
+                colleges: '75+ Affiliated Units',
+                share: '18%',
+                sla: '91% SLA',
+                status: 'Optimal',
+              },
+              {
+                zone: 'Zone 3 - V.V. Nagar',
+                hq: 'BVM / GCET, Anand',
+                colleges: '80+ Affiliated Units',
+                share: '16%',
+                sla: '89% SLA',
+                status: 'Normal',
+              },
+              {
+                zone: 'Zone 4 - Rajkot',
+                hq: 'GEC Rajkot, Saurashtra',
+                colleges: '65+ Affiliated Units',
+                share: '13%',
+                sla: '88% SLA',
+                status: 'Normal',
+              },
+              {
+                zone: 'Zone 5 - Surat',
+                hq: 'SCET / GEC Surat, South Guj',
+                colleges: '60+ Affiliated Units',
+                share: '11%',
+                sla: '92% SLA',
+                status: 'Optimal',
+              },
+            ].map((z) => (
+              <div
+                key={z.zone}
+                className="p-3.5 rounded-xl bg-slate-50 border border-slate-200 hover:border-slate-300 transition space-y-2"
+              >
+                <div className="flex items-center justify-between">
+                  <span className="text-xs font-bold text-slate-900">{z.zone}</span>
+                  <span className="text-[10px] font-semibold text-emerald-800 bg-emerald-50 px-1.5 py-0.5 rounded border border-emerald-200">
+                    {z.status}
+                  </span>
+                </div>
+                <p className="text-[11px] text-slate-500 font-medium truncate">{z.hq}</p>
+                <p className="text-[10px] text-slate-400 font-mono">{z.colleges}</p>
+                <div className="pt-2 border-t border-slate-200/80 flex items-center justify-between text-[11px]">
+                  <span className="font-semibold text-slate-700">Load: {z.share}</span>
+                  <span className="font-bold text-slate-900 font-mono">{z.sla}</span>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
 

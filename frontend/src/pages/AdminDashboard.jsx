@@ -4,13 +4,14 @@ import { useAuth } from '../context/AuthContext';
 import { useBrand } from '../context/BrandContext';
 import { complaintService } from '../services/complaintService';
 import { authService } from '../services/authService';
+import GtuEmblem from '../components/GtuEmblem';
 import StatCard from '../components/StatCard';
 import StatusBadge from '../components/StatusBadge';
 import PriorityBadge from '../components/PriorityBadge';
 import AssignStaffModal from '../components/AssignStaffModal';
 import UpdateStatusModal from '../components/UpdateStatusModal';
 import { formatDate, timeAgo } from '../utils/formatters';
-import { CATEGORIES, STATUSES, PRIORITIES, DEPARTMENTS } from '../utils/constants';
+import { CATEGORIES, STATUSES, PRIORITIES, DEPARTMENTS, GTU_ZONES } from '../utils/constants';
 import {
   Shield,
   FileText,
@@ -71,6 +72,7 @@ export default function AdminDashboard() {
   const [priorityFilter, setPriorityFilter] = useState('All');
   const [categoryFilter, setCategoryFilter] = useState('All');
   const [departmentFilter, setDepartmentFilter] = useState('All');
+  const [zoneFilter, setZoneFilter] = useState('All');
 
   const loadData = async () => {
     try {
@@ -121,6 +123,7 @@ export default function AdminDashboard() {
     const studentName = c.student?.name || '';
     const studentRoll = c.student?.rollNumber || '';
     const studentDept = c.student?.department || '';
+    const locationString = (c.location?.building || '') + ' ' + (c.student?.hostelRoom || '');
 
     const matchesSearch =
       !search ||
@@ -135,7 +138,23 @@ export default function AdminDashboard() {
     const matchesDept =
       departmentFilter === 'All' || studentDept.toLowerCase() === departmentFilter.toLowerCase();
 
-    return matchesSearch && matchesStatus && matchesPriority && matchesCategory && matchesDept;
+    let matchesZone = true;
+    if (zoneFilter !== 'All') {
+      const zName = zoneFilter.toLowerCase();
+      if (zName.includes('ahmedabad')) {
+        matchesZone = locationString.toLowerCase().includes('ahmedabad') || locationString.toLowerCase().includes('vgec') || locationString.toLowerCase().includes('ldce') || locationString.toLowerCase().includes('chandkheda') || !locationString.trim();
+      } else if (zName.includes('gandhinagar')) {
+        matchesZone = locationString.toLowerCase().includes('gandhinagar');
+      } else if (zName.includes('vidyanagar')) {
+        matchesZone = locationString.toLowerCase().includes('vidyanagar') || locationString.toLowerCase().includes('bvm') || locationString.toLowerCase().includes('gcet');
+      } else if (zName.includes('rajkot')) {
+        matchesZone = locationString.toLowerCase().includes('rajkot');
+      } else if (zName.includes('surat')) {
+        matchesZone = locationString.toLowerCase().includes('surat') || locationString.toLowerCase().includes('scet');
+      }
+    }
+
+    return matchesSearch && matchesStatus && matchesPriority && matchesCategory && matchesDept && matchesZone;
   });
 
   // Calculate executive statistics
@@ -154,30 +173,39 @@ export default function AdminDashboard() {
     <div className="min-h-screen bg-slate-50 pb-12">
       {/* Sub-header / Breadcrumb Bar */}
       <div className="bg-white border-b border-slate-200 px-4 sm:px-6 lg:px-8 py-3">
-        <div className="max-w-7xl mx-auto flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-          <div className="flex items-center gap-2 text-xs text-slate-500">
-            <span>Dean of Student Affairs</span>
-            <ChevronRight className="w-3.5 h-3.5 text-slate-400" />
-            <span className="font-semibold text-slate-800">SGRC Administrative Command Terminal</span>
-            <span className="hidden md:inline-block font-mono text-[11px] text-slate-400 border-l border-slate-200 pl-2">
-              Officer: {user?.name} (UID: ADM-001)
-            </span>
+        <div className="max-w-7xl mx-auto flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <div className="flex items-center gap-3">
+            <GtuEmblem className="w-8 h-8 hidden sm:block shrink-0" />
+            <div>
+              <div className="flex items-center gap-2 text-xs text-slate-500">
+                <span className="font-semibold text-slate-700">GTU Central SGRC Secretariat</span>
+                <ChevronRight className="w-3.5 h-3.5 text-slate-400" />
+                <span className="font-semibold text-[#092244]">Administrative Command Terminal</span>
+              </div>
+              <p className="text-[11px] text-[#c88a1e] font-semibold mt-0.5">
+                ગુજરાત ટેકનોલોજીકલ યુનિવર્સિટી • Chandkheda Headquarters, Ahmedabad
+              </p>
+            </div>
           </div>
 
           <div className="flex items-center gap-2">
+            <span className="hidden lg:inline-block font-mono text-[11px] text-slate-500 px-2.5 py-1 rounded bg-slate-100 border border-slate-200">
+              Officer: {user?.name} (Ombudsman Secretariat)
+            </span>
+
             <Link
               to="/admin/analytics"
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-slate-200 hover:bg-slate-50 text-slate-700 text-xs font-semibold transition"
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 text-xs font-semibold transition"
             >
               <BarChart3 className="w-3.5 h-3.5 text-slate-500" />
-              <span>Full Analytics</span>
+              <span>Zonal Analytics</span>
             </Link>
 
             <button
               onClick={() => setIsCreateStaffOpen(true)}
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-900 hover:bg-black text-white text-xs font-semibold transition"
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#092244] hover:bg-[#071933] text-white text-xs font-semibold shadow-xs transition"
             >
-              <Plus className="w-3.5 h-3.5" />
+              <Plus className="w-3.5 h-3.5 text-[#c88a1e]" />
               <span>Register Cell Officer</span>
             </button>
           </div>
@@ -270,9 +298,9 @@ export default function AdminDashboard() {
           {activeTab === 'ledger' && (
             <div className="p-6 space-y-4">
               {/* Enterprise Filter Toolbar */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-2.5">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-2.5">
                 {/* Search Input */}
-                <div className="relative">
+                <div className="relative lg:col-span-1">
                   <Search className="w-4 h-4 text-slate-400 absolute left-3 top-2.5" />
                   <input
                     type="text"
@@ -281,6 +309,22 @@ export default function AdminDashboard() {
                     placeholder="Search PRN, student, docket..."
                     className="w-full text-xs pl-9 pr-3 py-2 rounded-lg border border-slate-300 focus:outline-none focus:ring-1 focus:ring-slate-800"
                   />
+                </div>
+
+                {/* GTU Zone Dropdown */}
+                <div>
+                  <select
+                    value={zoneFilter}
+                    onChange={(e) => setZoneFilter(e.target.value)}
+                    className="w-full text-xs p-2 rounded-lg border border-slate-300 focus:outline-none focus:ring-1 focus:ring-slate-800 bg-white"
+                  >
+                    <option value="All">All GTU Zones (1-5)</option>
+                    {GTU_ZONES.map((z) => (
+                      <option key={z} value={z}>
+                        {z}
+                      </option>
+                    ))}
+                  </select>
                 </div>
 
                 {/* Status Dropdown */}
@@ -363,7 +407,7 @@ export default function AdminDashboard() {
                   <table className="w-full text-left text-xs border-collapse">
                     <thead>
                       <tr className="bg-slate-50 text-[11px] font-bold text-slate-700 uppercase tracking-wider border-b border-slate-200">
-                        <th className="py-3 px-4">Complainant (Student)</th>
+                        <th className="py-3 px-4">Complainant (GTU Student)</th>
                         <th className="py-3 px-4">Docket Ref & Subject</th>
                         <th className="py-3 px-4">Classification</th>
                         <th className="py-3 px-4">Priority</th>
@@ -377,13 +421,18 @@ export default function AdminDashboard() {
                         <tr key={c._id} className="hover:bg-slate-50/80 transition">
                           {/* Student Complainant Identity */}
                           <td className="py-3 px-4">
-                            <div className="font-bold text-slate-900">{c.student?.name || 'Unknown'}</div>
-                            <div className="font-mono text-[11px] font-semibold text-slate-600">
-                              PRN: {c.student?.rollNumber || 'NO-ROLL'}
+                            <div className="font-bold text-slate-900">{c.student?.name || 'Unknown Complainant'}</div>
+                            <div className="font-mono text-[11px] font-semibold text-slate-700">
+                              PRN: {c.student?.rollNumber || 'NO-PRN'}
                             </div>
-                            <div className="text-[10px] text-slate-500">
-                              {c.student?.department || '—'}
+                            <div className="text-[10px] text-slate-500 truncate max-w-[170px]">
+                              {c.student?.department || 'General'}
                             </div>
+                            {c.student?.hostelRoom && (
+                              <div className="text-[10px] text-[#c88a1e] font-medium truncate max-w-[170px]">
+                                {c.student.hostelRoom}
+                              </div>
+                            )}
                           </td>
 
                           {/* Docket Ref & Subject */}

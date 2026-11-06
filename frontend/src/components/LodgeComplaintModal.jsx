@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { complaintService } from '../services/complaintService';
 import { useAuth } from '../context/AuthContext';
 import { useBrand } from '../context/BrandContext';
+import GtuEmblem from './GtuEmblem';
 import { CATEGORIES, PRIORITIES } from '../utils/constants';
 import {
   X,
@@ -99,23 +100,21 @@ export default function LodgeComplaintModal({ isOpen, onClose, onCreated }) {
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-xs animate-in fade-in overflow-y-auto">
       <div className="bg-white rounded-xl max-w-xl w-full shadow-2xl border border-slate-200 overflow-hidden my-8">
         {/* Header */}
-        <div className="flex items-center justify-between px-6 py-4 border-b border-slate-200 bg-slate-50">
-          <div className="flex items-center gap-2.5">
-            <div className="p-2 rounded-lg bg-slate-800 text-white">
-              <Shield className="w-4 h-4 text-amber-400" />
-            </div>
+        <div className="flex items-center justify-between px-6 py-4 border-b border-slate-200 bg-[#092244] text-white">
+          <div className="flex items-center gap-3">
+            <GtuEmblem className="w-9 h-9 shrink-0 drop-shadow-xs" />
             <div>
-              <h3 className="font-bold text-slate-900 text-sm">
-                Lodge Formal Institutional Grievance
+              <h3 className="font-bold text-white text-sm">
+                Lodge Formal Student Grievance Docket
               </h3>
-              <p className="text-[11px] text-slate-500">
-                Official Redressal Docket • {institution.name}
+              <p className="text-[11px] text-[#c88a1e] font-semibold">
+                {institution.nativeName || 'ગુજરાત ટેકનોલોજીકલ યુનિવર્સિટી'} • Central SGRC
               </p>
             </div>
           </div>
           <button
             onClick={onClose}
-            className="p-1.5 rounded-lg text-slate-400 hover:text-slate-600 hover:bg-slate-200 transition"
+            className="p-1.5 rounded-lg text-slate-300 hover:text-white hover:bg-white/10 transition"
           >
             <X className="w-4 h-4" />
           </button>
@@ -128,10 +127,10 @@ export default function LodgeComplaintModal({ isOpen, onClose, onCreated }) {
             <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
             <div>
               <p className="font-semibold text-slate-900">
-                Complainant Identity: {user?.name} (PRN: {user?.rollNumber})
+                Verified Complainant: {user?.name} (GTU PRN: <span className="font-mono text-slate-800">{user?.rollNumber}</span>)
               </p>
               <p className="text-[11px] text-slate-500">
-                Department: {user?.department} • Legally bound under UGC Regulations 2023.
+                Discipline: {user?.department} • Recorded under statutory UGC Grievance Redressal Regulations, 2023.
               </p>
             </div>
           </div>

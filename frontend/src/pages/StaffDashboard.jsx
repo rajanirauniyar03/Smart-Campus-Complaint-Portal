@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { useBrand } from '../context/BrandContext';
 import { complaintService } from '../services/complaintService';
+import GtuEmblem from '../components/GtuEmblem';
 import StatCard from '../components/StatCard';
 import StatusBadge from '../components/StatusBadge';
 import PriorityBadge from '../components/PriorityBadge';
@@ -24,6 +25,8 @@ import {
   ChevronRight,
   Phone,
   Eye,
+  Shield,
+  FileCheck,
 } from 'lucide-react';
 
 export default function StaffDashboard() {
@@ -95,29 +98,57 @@ export default function StaffDashboard() {
     <div className="min-h-screen bg-slate-50 pb-12">
       {/* Sub-header / Breadcrumb Bar */}
       <div className="bg-white border-b border-slate-200 px-4 sm:px-6 lg:px-8 py-3">
-        <div className="max-w-7xl mx-auto flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-          <div className="flex items-center gap-2 text-xs text-slate-500">
-            <span>Operational Cells</span>
-            <ChevronRight className="w-3.5 h-3.5 text-slate-400" />
-            <span className="font-semibold text-slate-800">
-              Work Order & Redressal Desk
-            </span>
-            <span className="hidden md:inline-block font-mono text-[11px] text-slate-400 border-l border-slate-200 pl-2">
-              Officer: {user?.name} • Division: {user?.department}
-            </span>
+        <div className="max-w-7xl mx-auto flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <div className="flex items-center gap-3">
+            <GtuEmblem className="w-8 h-8 hidden sm:block shrink-0" />
+            <div>
+              <div className="flex items-center gap-2 text-xs text-slate-500">
+                <span className="font-semibold text-slate-700">GTU Zonal Redressal & Maintenance Cell</span>
+                <ChevronRight className="w-3.5 h-3.5 text-slate-400" />
+                <span className="font-semibold text-[#092244]">Field Work Order & Redressal Desk</span>
+              </div>
+              <p className="text-[11px] text-[#c88a1e] font-semibold mt-0.5">
+                ગુજરાત ટેકનોલોજીકલ યુનિવર્સિટી • Zonal Operations Terminal
+              </p>
+            </div>
           </div>
 
-          <button
-            onClick={loadAssignedComplaints}
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-slate-200 bg-white hover:bg-slate-50 text-slate-600 text-xs font-semibold transition self-start sm:self-auto"
-          >
-            <RefreshCw className="w-3.5 h-3.5" />
-            <span>Synchronize Queue</span>
-          </button>
+          <div className="flex items-center gap-2">
+            <span className="hidden md:inline-block font-mono text-[11px] text-slate-600 px-2.5 py-1 rounded bg-slate-100 border border-slate-200">
+              Officer: {user?.name} • Division: {user?.department}
+            </span>
+
+            <button
+              onClick={loadAssignedComplaints}
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-slate-200 bg-white hover:bg-slate-50 text-slate-600 text-xs font-semibold transition self-start sm:self-auto"
+            >
+              <RefreshCw className="w-3.5 h-3.5" />
+              <span>Synchronize Queue</span>
+            </button>
+          </div>
         </div>
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 space-y-6">
+        {/* Field Officer Standard Operating Procedure Banner */}
+        <div className="bg-white rounded-xl border border-slate-200 p-4 shadow-xs flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 text-xs text-slate-700">
+          <div className="flex items-start gap-3">
+            <div className="p-2 rounded-lg bg-[#092244] text-white shrink-0">
+              <FileCheck className="w-4 h-4 text-[#c88a1e]" />
+            </div>
+            <div>
+              <p className="font-bold text-slate-900">
+                GTU Redressal Officer Protocol (Ombudsman SLA Benchmark: 7 Working Days)
+              </p>
+              <p className="text-[11px] text-slate-500 mt-0.5">
+                Conduct on-site inspection, update docket action logs with timestamped remarks, and provide formal resolution details before docket closure.
+              </p>
+            </div>
+          </div>
+          <span className="text-[10px] font-mono font-semibold px-2.5 py-1 rounded bg-slate-100 text-slate-700 border border-slate-200 shrink-0">
+            Field Unit Active
+          </span>
+        </div>
         {/* KPI Cards Ribbon */}
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
           <StatCard
