@@ -11,6 +11,7 @@ import ComplaintComments from '../components/ComplaintComments';
 import AssignStaffModal from '../components/AssignStaffModal';
 import UpdateStatusModal from '../components/UpdateStatusModal';
 import { formatDate, formatDateTime } from '../utils/formatters';
+import { BACKEND_URL } from '../utils/constants';
 import {
   ArrowLeft,
   User,
@@ -104,7 +105,7 @@ export default function ComplaintDetail() {
   const getFullImageUrl = (path) => {
     if (!path) return '';
     if (path.startsWith('http')) return path;
-    return `http://localhost:5000${path}`;
+    return `${BACKEND_URL}${path}`;
   };
 
   return (

@@ -1,0 +1,19 @@
+services:
+  # Web Service running the Express Backend & Serving React Frontend
+  - type: web
+    name: smart-campus-portal
+    env: node
+    plan: free
+    buildCommand: npm install --prefix backend && npm install --prefix frontend && npm run build --prefix frontend
+    startCommand: node backend/server.js
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 10000
+      - key: JWT_SECRET
+        generateValue: true
+      - key: JWT_EXPIRE
+        value: 30d
+      - key: MONGO_URI
+        sync: false # Set your MongoDB Atlas connection string in Render Dashboard
